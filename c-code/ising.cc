@@ -12,7 +12,7 @@ int* s = nullptr;
 long int e;
 long int m;
 
-const double beta = 1 / 2.5; // 1 / kT
+const double beta = 1 / 1.; // 1 / kT
 const long int nSample = 100000; // Anzahl Metropolis-Iterationen pro Durchlauf
 const int nRound = 100; // Anzahl Durchlaeufe
 const long int nTherm = nRound / 10; // Anzahl Thermalisierungs-Runden
