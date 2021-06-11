@@ -8,15 +8,15 @@ static double zuf() { return drand48(); }
 void PIC::init()
 {
   // set parameters:
-  nParticle = 1000;
+  nParticle = 10000;
 
   // iteration:
-  interval = .5;
-  nInterval = 10;
+  interval = 0.5;
+  nInterval = 300;
   dt = 0.05;
 
   Lx = 3.;
-  Nx = 20;
+  Nx = 256;
   dx = Lx / Nx;
 
   outFileNameStem = "data/";
@@ -28,7 +28,9 @@ void PIC::init()
   for(int ip=0; ip<nParticle; ++ip){
     Particle& p = particles(ip);
     p.x = Lx * ip / nParticle;
-    p.v = 0.02*sin(2.*M_PI* p.x / Lx);
+	p.x += 0.001*sin(2.*M_PI* p.x / Lx);
+    //p.v = 0.02*sin(2.*M_PI* p.x / Lx);
+	p.v = (ip%2)==0 ? 0.3 : -0.3;
   }
 
   // allocate grid and fields

@@ -26,7 +26,7 @@ title( [ 'time = ', num2str(time) ] );
 xlabel('x');
 ylabel('v');
 xlim([0, 3]);
-ylim([-.02, .02]);
+%ylim([-.02, .02]);
 end
 
 function showFields( fileName )

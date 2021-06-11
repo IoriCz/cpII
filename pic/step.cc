@@ -8,10 +8,10 @@
 static void calcEx(DArr1& ex, const DArr1& n, double dx)
 {
   const int Nx = ex.size();
-  ex(0) = 0.;
+  ex(0) = 0;
   double sumE = 0.;
-  for(int i = 1; i < Nx; ++i){
-    ex(i) = 0.;
+  for(int i = 1; i < Nx; ++i){  // Warum wird hier von i=1 an gezaehlt?!?
+    ex(i) = dx * (n(i-1) - 1) + ex(i-1);  // Euler Vorwaerts, q/eps_0 = 1, n_mittel = 1
     sumE += ex(i);
   }
   
@@ -46,6 +46,29 @@ void PIC::moments()
     n(iNeighb) += wNeighb;
     n(iCell) += (1.-wNeighb);
     const double v = particles(j).v;
+	u(iNeighb) += v * wNeighb;
+	u(iCell) += v * (1.-wNeighb);
+  }
+  
+  for(int j = 0; j < nParticle; ++j){
+    double xj = particles(j).x;
+    int iCell = lround( xj/dx + 0.5 ) - 1; // cell index of particle center
+    if(iCell < 0){
+      iCell += Nx;
+      xj += Lx;
+    }else if(iCell >= Nx){ 
+      iCell -= Nx;
+      xj -= Lx;
+    }
+    
+    // weight for neighbor cell: Distance of partcle center from cell center / dx
+    double wNeighb = fabs( xj - x(iCell) ) / dx;
+    // right or left neighbor cell with periodic conditions
+    int iNeighb = ( xj > x(iCell) ) ? (iCell+1) % Nx : (iCell+Nx-1) % Nx;
+
+    const double v = particles(j).v;
+	T(iNeighb) += powf(v - u(iNeighb), 2) * wNeighb;
+	T(iCell) += powf(v - u(iCell), 2) * (1.-wNeighb);
   }
 
   // compute proper moments
@@ -53,6 +76,8 @@ void PIC::moments()
   const double klein = 1e-10;
   for(int i=0; i<Nx; ++i){
     n(i) *= factor;
+	u(i) *= factor / (n(i) + klein);
+	T(i) *= factor / (n(i) + klein);
   }
   calcEx(Ex, n, dx);
 }

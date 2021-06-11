@@ -25,7 +25,7 @@ void PIC::output()
 
   
  // restrict #particles to write out
-  const int maxOut = 1000;
+  const int maxOut = 100000;
   const int nOut = nParticle > maxOut ? maxOut : nParticle;
 
   FILE* fp = openFile( oss.str().c_str() );
