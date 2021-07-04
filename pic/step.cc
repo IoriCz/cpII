@@ -48,28 +48,10 @@ void PIC::moments()
     const double v = particles(j).v;
 	u(iNeighb) += v * wNeighb;
 	u(iCell) += v * (1.-wNeighb);
+	T(iNeighb) += v*v * wNeighb;
+	T(iCell) += v*v * (1.-wNeighb);
   }
   
-  for(int j = 0; j < nParticle; ++j){
-    double xj = particles(j).x;
-    int iCell = lround( xj/dx + 0.5 ) - 1; // cell index of particle center
-    if(iCell < 0){
-      iCell += Nx;
-      xj += Lx;
-    }else if(iCell >= Nx){ 
-      iCell -= Nx;
-      xj -= Lx;
-    }
-    
-    // weight for neighbor cell: Distance of partcle center from cell center / dx
-    double wNeighb = fabs( xj - x(iCell) ) / dx;
-    // right or left neighbor cell with periodic conditions
-    int iNeighb = ( xj > x(iCell) ) ? (iCell+1) % Nx : (iCell+Nx-1) % Nx;
-
-    const double v = particles(j).v;
-	T(iNeighb) += powf(v - u(iNeighb), 2) * wNeighb;
-	T(iCell) += powf(v - u(iCell), 2) * (1.-wNeighb);
-  }
 
   // compute proper moments
   const double factor = ((double)Nx)/nParticle;
@@ -77,7 +59,7 @@ void PIC::moments()
   for(int i=0; i<Nx; ++i){
     n(i) *= factor;
 	u(i) *= factor / (n(i) + klein);
-	T(i) *= factor / (n(i) + klein);
+	T(i) = T(i) * factor / (n(i) + klein) - u(i)*u(i);
   }
   calcEx(Ex, n, dx);
 }

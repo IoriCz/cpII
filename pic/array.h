@@ -46,7 +46,7 @@ public:
 
   // Allokiere Speicher fuer n Elemente
   void allocate(const int n){
-    assert( n >=0 && ( n < 1000000 ) );
+    assert( n >=0 && ( n < 10000000 ) );
     free();
     data_ = new T[n];
     n_ = n;

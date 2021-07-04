@@ -27,7 +27,7 @@ void IntArray2::fill(int z)
 void IntArray2::allocate(const int n, const int m)
 {
   free();
-  const int maxGroesse = 100000;
+  const int maxGroesse = 10000000;
   if( !check(n, 0, maxGroesse) || !check(m, 0, maxGroesse) ){
     // Wenn etwas mit der Groesse nicht stimmt, brechen wir das
     // Programm ab. Einfach aber brutal.

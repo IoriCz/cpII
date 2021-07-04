@@ -8,15 +8,15 @@ static double zuf() { return drand48(); }
 void PIC::init()
 {
   // set parameters:
-  nParticle = 10000;
+  nParticle = 1000000;
 
   // iteration:
   interval = 0.5;
-  nInterval = 300;
+  nInterval = 10;
   dt = 0.05;
 
   Lx = 3.;
-  Nx = 256;
+  Nx = 1000;
   dx = Lx / Nx;
 
   outFileNameStem = "data/";

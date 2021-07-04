@@ -19,6 +19,7 @@ static int outSeq = 0;
 
 void PIC::output()
 {
+	return; // nur fuer Zeitvergleichung
   // write particle data: Create output file name from seq
   std::ostringstream oss;
   oss << outFileNameStem << "partData." << std::setw(4) << std::setfill('0') << outSeq;
